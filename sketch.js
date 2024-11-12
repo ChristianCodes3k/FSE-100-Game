@@ -1,10 +1,23 @@
+// variables for Target Game
 let targets = [];
 let clicksCount = 0;
 let gameOver = false;
 let startTime, finalTime;
 
+// variables for Balloon Popper Game
+let pinY = 0;
+let pinSpeed = 3;
+let randX; 
+let randY; 
+let score = 0;
+let screen = 1;
+
 function setup() {
   createCanvas(400, 400);
+
+  // random variables initialized for Pin Game
+  randX = random(25, 375);
+  randY = random(200, 375);
   
   // Create targets at specific positions
   targets.push(new Target(50, 100));
@@ -19,11 +32,35 @@ function setup() {
 function draw() {
   background(0, 153, 255);
 
-  if (!gameOver) {
+  if (screen === 1){
+    background(106,13,173);
+    fill(255,255,255);
+    
+    rect(40,60,110,60);
+    rect(240,60,110,60);
+    rect(40,280,110,60);
+    rect(240,280,110,60);
+    textSize(20);
+    fill(0);
+    text('Aim Trainer',43,95);
+    text('Balloon Pop', 241,95);
+    text('Breakout',54,316);
+    text('Keyboard',251,307);
+    text('Hero',273,330);
+    textSize(70);
+    text('Arcade', 90,220);
+
+    if(mouseX >= 40 && mouseX <= 150 && mouseY >= 60 && mouseY <= 120 && mouseIsPressed){
+      screen = 2;
+    }
+
+  }
+
+  if (screen === 2) {
     let seconds = (millis() - startTime) / 1000; // Calculate the elapsed time in seconds
 
     // Ensure text is aligned to the top-left for the timer
-    textAlign(LEFT, TOP);  // Reset text alignment for the timer
+    //textAlign(LEFT, TOP);  // Reset text alignment for the timer
     textSize(32);
     fill(0);
     text('Time: ' + nf(seconds, 0, 2) + ' seconds', 10, height / 14);
@@ -33,14 +70,92 @@ function draw() {
       targets[i].show();
     }
 
-  } else {
+
+  }
+
+  if (screen === 3 || gameOver) {
     // Game complete screen
+    background(106,13,173);
     textSize(32);
     fill(0);
-    textAlign(CENTER, CENTER);  // Center the game complete text
-    text('Game Complete!', width / 2, height / 2 - 40);
-    text('Final Time: ' + nf(finalTime, 0, 2) + ' seconds', width / 2, height / 2);
-    text('Click to play again', width / 2, height / 2 + 40);
+    //textAlign(CENTER, CENTER);  // Center the game complete text
+    text('Game Complete!', width / 2, height / 2 - 60);
+    text('Final Time: ' + nf(finalTime, 0, 2) + ' seconds', width / 2, (height / 2) - 20);
+    
+    fill(255,255,255);
+    rect(90,220,90,50);
+    rect(240,220,90,50);
+    fill(0);
+    textSize(20);
+    text('Home',135,245);
+    text('Play',285,235);
+    text('Again',285,255);
+
+    if(mouseX >= 90 && mouseX <= 180 && mouseY >= 220 && mouseY <= 270 && mouseIsPressed){
+      resetHome();
+      screen = 1;
+    }
+
+    if(mouseX >= 240 && mouseX <= 330 && mouseY >= 220 && mouseY <= 270 && mouseIsPressed){
+      resetGame();
+      screen = 2;
+    }
+
+
+  }
+
+  if (screen === 4){
+    background(220);
+    
+    textSize(50);
+    rect(140,150,120,70);
+    text('Play', 150, 200);
+
+    text('Balloon Popper', 30, 60);
+    
+    if(mouseX >= 140 && mouseX <= 260 && mouseY >= 150 && mouseY <= 220 && mouseIsPressed){
+      screen = 5;
+    }
+  }
+
+  if (screen === 5){
+    background(220);
+    textSize(50);
+    text('Score: ', 100, 50);
+    text(score, 250, 50);
+    
+   if(mouseX >= randX - 25 && mouseX <= randX + 25 && pinY + 50 >= randY-25 ){
+    randX = random(25, 375);
+    randY = random(200, 375);
+    pinY = 0;
+    score = score + 1;
+  }
+  
+  circle(randX,randY,50);
+  
+  triangle(mouseX - 5, pinY, mouseX + 5, pinY, mouseX, pinY + 50);
+  
+  pinY = pinY + pinSpeed;
+  
+  if(pinY > height) {
+    screen = 3;
+    pinY = 0;
+  }
+  }
+
+  if (screen === 6){
+    background(220);
+    textSize(50);
+    rect(130,250,140,70);
+    text('Home', 135, 300);
+    text('Score: ', 100, 50);
+    text(score, 250, 50);
+    text('Game Over', 75, 150);
+    
+    if(mouseX >= 130 && mouseX <= 270 && mouseY >= 250 && mouseY <= 320 && mouseIsPressed){
+      screen = 1;
+      score = 0;
+    }
   }
 }
 
@@ -91,8 +206,9 @@ function mousePressed() {
     for (let i = 0; i < targets.length; i++) {
       targets[i].clicked();  // Check if a target was clicked
     }
-  } else {
-    resetGame();  // If game is over, clicking restarts the game
+  }
+  else{
+    screen = 1;
   }
 }
 
@@ -100,6 +216,7 @@ function mousePressed() {
 function checkGameStatus() {
   if (clicksCount >= targets.length) {
     gameOver = true;
+    screen = 3;
     finalTime = (millis() - startTime) / 1000;  // Capture the final time
   }
 }
@@ -115,4 +232,11 @@ function resetGame() {
   for (let i = 0; i < targets.length; i++) {
     targets[i].isBroken = false;
   }
+}
+
+function resetHome(){
+  gameOver = false;
+  clicksCount = 0;
+  startTime = millis();  // Restart the timer
+  finalTime = 0;
 }
