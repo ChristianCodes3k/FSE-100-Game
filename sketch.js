@@ -26,7 +26,7 @@ function setup() {
   targets.push(new Target(350, 350));
   targets.push(new Target(200, 200));
 
-  //startTime = millis();  // Record the start time
+  
 }
 
 function draw() {
@@ -50,12 +50,18 @@ function draw() {
     textSize(70);
     text('Arcade', 90,220);
 
+    //Starts Aim Trainer
     if(mouseX >= 40 && mouseX <= 150 && mouseY >= 60 && mouseY <= 120 && mouseIsPressed){
       screen = 2;
       for (let i = 0; i < targets.length; i++) {
         targets[i].isBroken = false;
       }
       startTime = millis();
+    }
+    
+    //Starts Balloon Popper
+    if(mouseX >= 240 && mouseX <= 350 && mouseY >= 60 && mouseY <= 120 && mouseIsPressed){
+      screen = 4;
     }
 
   }
@@ -135,16 +141,16 @@ function draw() {
     score = score + 1;
   }
   
-  circle(randX,randY,50);
+    circle(randX,randY,50);
   
-  triangle(mouseX - 5, pinY, mouseX + 5, pinY, mouseX, pinY + 50);
+    triangle(mouseX - 5, pinY, mouseX + 5, pinY, mouseX, pinY + 50);
   
-  pinY = pinY + pinSpeed;
+    pinY = pinY + pinSpeed;
   
-  if(pinY > height) {
-    screen = 3;
-    pinY = 0;
-  }
+    if(pinY > height) {
+      screen = 3;
+      pinY = 0;
+    }
   }
 
   if (screen === 6){
