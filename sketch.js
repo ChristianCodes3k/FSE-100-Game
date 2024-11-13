@@ -26,7 +26,7 @@ function setup() {
   targets.push(new Target(350, 350));
   targets.push(new Target(200, 200));
 
-  startTime = millis();  // Record the start time
+  //startTime = millis();  // Record the start time
 }
 
 function draw() {
@@ -52,6 +52,10 @@ function draw() {
 
     if(mouseX >= 40 && mouseX <= 150 && mouseY >= 60 && mouseY <= 120 && mouseIsPressed){
       screen = 2;
+      for (let i = 0; i < targets.length; i++) {
+        targets[i].isBroken = false;
+      }
+      startTime = millis();
     }
 
   }
