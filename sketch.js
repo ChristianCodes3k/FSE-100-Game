@@ -99,17 +99,17 @@ function draw() {
     textSize(32);
     fill(0);
     //textAlign(CENTER, CENTER);  // Center the game complete text
-    text('Game Complete!', width / 2, height / 2 - 60);
-    text('Final Time: ' + nf(finalTime, 0, 2) + ' seconds', width / 2, (height / 2) - 20);
+    text('Game Complete!', width / 5, height / 2 - 60);
+    text('Final Time: ' + nf(finalTime, 0, 2) + ' seconds', width / 12, (height / 2) - 20);
     
     fill(255,255,255);
     rect(90,220,90,50);
     rect(240,220,90,50);
     fill(0);
     textSize(20);
-    text('Home',135,245);
-    text('Play',285,235);
-    text('Again',285,255);
+    text('Home',110,245);
+    text('Play',270,240);
+    text('Again',265,260);
 
     if(mouseX >= 90 && mouseX <= 180 && mouseY >= 220 && mouseY <= 270 && mouseIsPressed){
       resetHome();
