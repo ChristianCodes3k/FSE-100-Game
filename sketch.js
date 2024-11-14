@@ -20,11 +20,21 @@ function setup() {
   randY = random(200, 375);
   
   // Create targets at specific positions
-  targets.push(new Target(50, 100));
-  targets.push(new Target(350, 100));
-  targets.push(new Target(50, 350));
-  targets.push(new Target(350, 350));
-  targets.push(new Target(200, 200));
+  x1 = random(30, 100);
+  x2 = random(30, 100);
+  x3 = random(235, 370);
+  x4 = random(235, 370);
+  y1 = random(90, 170);
+  y2 = random(90, 170);
+  y3 = random(210, 360);
+  y4 = random(210, 360);
+  y5 = random(90, 360);
+  
+  targets.push(new Target(x1, y1));
+  targets.push(new Target(x3, y2));
+  targets.push(new Target(x2, 350));
+  targets.push(new Target(x4, 350));
+  targets.push(new Target(200, y5));
 
   
 }
@@ -244,7 +254,29 @@ function resetGame() {
 
   // Reset the targets
   for (let i = 0; i < targets.length; i++) {
+    targets[i].show();
+    
     targets[i].isBroken = false;
+
+     // Rerandomize positions for each target
+  x1 = random(30, 100);
+  x2 = random(30, 100);
+  x3 = random(235, 370);
+  x4 = random(235, 370);
+  y1 = random(90, 170);
+  y2 = random(90, 170);
+  y3 = random(210, 360);
+  y4 = random(210, 360);
+  y5 = random(90, 360);
+
+  // Reset the targets with new positions
+  targets = [
+    new Target(x1, y1),
+    new Target(x3, y2),
+    new Target(x2, 350),
+    new Target(x4, 350),
+    new Target(200, y5)
+  ];
   }
 }
 
