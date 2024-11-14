@@ -118,7 +118,9 @@ function draw() {
     background(220);
     
     textSize(50);
+    fill(255);
     rect(140,150,120,70);
+    fill(0);
     text('Play', 150, 200);
 
     text('Balloon Popper', 30, 60);
@@ -148,7 +150,7 @@ function draw() {
     pinY = pinY + pinSpeed;
   
     if(pinY > height) {
-      screen = 3;
+      screen = 6;
       pinY = 0;
     }
   }
@@ -156,7 +158,9 @@ function draw() {
   if (screen === 6){
     background(220);
     textSize(50);
+    fill(255);
     rect(130,250,140,70);
+    fill(0);
     text('Home', 135, 300);
     text('Score: ', 100, 50);
     text(score, 250, 50);
