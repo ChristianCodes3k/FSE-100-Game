@@ -12,6 +12,24 @@ let randY;
 let score = 0;
 let screen = 1;
 
+// variables for Keyboard Hero Game
+let notes = [];
+let points = 0;
+let streak = 0;
+let delay = 0;
+let delayGoal = 40;
+let delayStreak = 1;
+let delayCurrent = 1;
+let start = false;
+let pause = false;
+let speed = 3;
+let noteRoom = 20;
+let delayRoom = 15;
+let streakRoom = 2;
+const sound = new Audio("miss.mp3"); 
+const sounds = [new Audio("C5.mp3"), new Audio("E5.mp3"), new Audio("G5.mp3"), new Audio("A5.mp3")];
+let correct = new Audio();
+
 function setup() {
   createCanvas(400, 400);
 
@@ -72,6 +90,9 @@ function draw() {
     //Starts Balloon Popper
     if(mouseX >= 240 && mouseX <= 350 && mouseY >= 60 && mouseY <= 120 && mouseIsPressed){
       screen = 4;
+    }
+    if(mouseX >= 240 && mouseX <= 350 && mouseY >= 280 && mouseY <= 340 && mouseIsPressed){
+      screen = 7;
     }
 
   }
@@ -180,6 +201,8 @@ function draw() {
       screen = 1;
       score = 0;
     }
+  }
+  if (screen == 7){
   }
 }
 
