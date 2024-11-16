@@ -203,6 +203,23 @@ function draw() {
     }
   }
   if (screen == 7){
+    if(!start) {
+      fill(255, 255, 255);
+      textSize(30);
+      text("      Keyboard Hero\n\n\n\n  Press Space to start\nPress Escape to pause", 50, 100);
+      checkStart(); 
+    }
+    if(start) {
+      drawButtons();
+      notes.forEach(drawNote);
+      if(pause) {
+        fill(255, 255, 255);
+        text("                Paused\nPress Back to go to menu", 80, 200);
+      } else {
+        notes.forEach(moveDown);
+        upkeep();
+      }
+    }
   }
 }
 
@@ -308,4 +325,172 @@ function resetHome(){
   clicksCount = 0;
   startTime = millis();  // Restart the timer
   finalTime = 0;
+}
+
+// Code for keyboard hero
+function checkStart() {
+  window.onkeydown = function(e){if(e.keyCode === 32){start = true}}
+}
+function drawButtons() {
+  fill(255, 255, 255);
+  textSize(20);
+  text("Points: " + points, 100, 370);
+  text("Streak: " + streak, 220, 370);
+  fill(255, 255, 255);
+  window.onkeydown = function(e){if(e.keyCode === 37){fill(255, 0, 0)}}
+  triangle(77, 307.5, 113, 290, 113, 325);
+  fill(255, 255, 255);
+  window.onkeydown = function(e){if(e.keyCode === 38){fill(0, 255, 0, 50)}}
+  triangle(147, 325, 165, 290, 183, 325);
+  fill(255, 255, 255);
+  window.onkeydown = function(e){if(e.keyCode === 40){fill(0, 0, 255, 50)}}
+  triangle(217, 290, 235, 325, 253, 290);
+  fill(255, 255, 255);
+  window.onkeydown = function(e){if(e.keyCode === 39){fill(128, 0, 128, 50)}}
+  triangle(287, 290, 287, 325, 324, 307.5); 
+}
+function upkeep() {
+  if(delay == delayGoal) {
+    newNote();
+    if(delayStreak == delayCurrent) {
+      delayGoal = Math.floor(Math.random()*3)*10+delayRoom;
+      delayStreak = Math.floor(Math.random()*3)+streakRoom;
+      delayCurrent = 0;
+    }
+    delay = 0;
+    delayCurrent++;
+  }
+  delay++;
+}
+
+function newNote() {
+  a = Math.floor(Math.random()*4);
+  b = new Note(a);
+  notes.push(b);
+}
+
+function keyPressed() {
+  let found = false;
+  i = 0;
+  dir = -1;
+  switch(key) {
+    case 'ArrowLeft':
+      dir = 0;
+      break;
+    case 'ArrowUp':
+      dir = 1;
+      break;
+    case 'ArrowDown':
+      dir = 2;
+      break;
+    case 'ArrowRight':
+      dir = 3;
+      break; 
+    case 'Escape':
+      if(start) {
+        if(pause) {
+          pause = false;
+        } else {
+          pause = true;
+        }
+      } else {
+        if(screen === 7) {
+          screen = 1;
+        }
+      }
+      return;
+    case 'Backspace':
+      if(pause) {
+        start = false;
+        pause = false;
+        notes = [];
+        points = 0;
+        streak = 0;
+        delay = 0;
+        delayGoal = 40;
+        delayStreak = 1;
+        delayCurrent = 1;
+      }
+      return
+    default:
+      return;
+  }
+  while(!found && i < notes.length) {
+    if(notes[i].getDir() == dir) {
+      found = true;
+      if(325-notes[i].getY() < 20) {
+        correct.pause();
+        correct.currentTime = 0
+        correct = sounds[dir];
+        correct.play();
+        points++;
+        streak++;
+        notes.splice(i, 1);
+      } else {
+        if(points != 0) {
+          points--;
+        }
+        streak = 0;
+      }
+    }
+    i++;
+  }
+  if(!found) {
+    if(points != 0) {
+      points--;
+    }
+    streak = 0;
+  }
+}
+
+function drawNote(note) {
+  y = note.getY();
+  switch(note.getDir()) {
+      case 0: 
+        fill(255, 0, 0);
+        triangle(77, y-17.5, 113, y-35, 113, y);
+        break;
+      case 1: 
+        fill(0, 255, 0);
+        triangle(147, y, 165, y-35, 183, y);
+        break;
+      case 2: 
+        fill(0, 0, 255);
+        triangle(217, y-35, 235, y, 253, y-35);
+        break;
+      case 3: 
+        fill(128, 0, 128);
+        triangle(287, y-35, 287, y, 324, y-17.5);
+        break;
+    }
+}
+
+function moveDown(note) {
+  y = note.getY() + speed;
+  note.setY(y);
+  if(notes[0].getY() > 325 + noteRoom) {
+    notes.shift();
+    if(points != 0) {
+      points--;
+      sound.play();
+    }
+    streak = 0;
+  }
+}
+
+class Note {
+  constructor(dir) {
+    this.dir = dir;
+    this.y = 0;
+  }
+  
+  getDir() {
+    return this.dir;
+  }
+  getY() {
+    return this.y;
+  }
+  setY(y) {
+    this.y = y;
+  }
 }
