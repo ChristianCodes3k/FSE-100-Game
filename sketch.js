@@ -6,7 +6,7 @@ let startTime, finalTime;
 
 // variables for Balloon Popper Game
 let pinY = 0;
-let pinSpeed = 3;
+let pinSpeed = 5;
 let randX; 
 let randY; 
 let score = 0;
@@ -198,7 +198,7 @@ function draw() {
     text('Score: ', 100, 50);
     text(score, 250, 50);
     
-   if(mouseX >= randX - 25 && mouseX <= randX + 25 && pinY + 50 >= randY-25 ){
+   if(mouseX >= randX - 25 && mouseX <= randX + 25 && pinY + 50 >= randY-25 && pinY + 50 <= randY + 25){
     randX = random(25, 375);
     randY = random(200, 375);
     pinY = 0;
@@ -220,18 +220,28 @@ function draw() {
   if (screen === 6){
     textSize(50);
     fill(255);
-    rect(130,250,140,70);
+    rect(25,175,140,70);
+    rect(220,175,140,70);
     fill(0);
-    text('Home', 135, 300);
+    
+    text('Home', 30, 225);
     text('Score: ', 100, 50);
     text(score, 250, 50);
     text('Game Over', 75, 150);
+    textSize(28);
+    text('Play Again', 222,215);
     
-    if(mouseX >= 130 && mouseX <= 270 && mouseY >= 250 && mouseY <= 320 && mouseIsPressed){
+    if(mouseX >= 25 && mouseX <= 165 && mouseY >= 175 && mouseY <= 245 && mouseIsPressed){
       screen = 1;
       score = 0;
     }
+
+    if(mouseX >= 220 && mouseX <= 360 && mouseY >= 175 && mouseY <= 245 && mouseIsPressed){
+      screen = 5;
+      score = 0;
+    }
   }
+  
   if (screen == 7){
     if(bricks.length === 0){
       endScreen("YOU WIN");
